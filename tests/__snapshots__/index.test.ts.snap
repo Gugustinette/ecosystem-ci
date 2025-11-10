@@ -8,7 +8,7 @@ Force option enabled. Removing contents of <cwd>.ecosystem-ci...
 Cloning package vite into <cwd>.ecosystem-ci<path>
 Added pnpm overrides for package vite in <cwd>.ecosystem-ci<path>
 Running actions for package vite...
-  Executing action: pnpm i
+  Executing action: pnpm i --no-frozen-lockfile
   Executing action: pnpm run build
   Executing action: pnpm run test-unit",
 }
