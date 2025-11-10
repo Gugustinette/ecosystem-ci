@@ -1,0 +1,58 @@
+{
+  "name": "ecosystem-ci",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.21.0",
+  "description": "My awesome typescript library",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/gugustinette/ecosystem-ci#readme",
+  "bugs": {
+    "url": "https://github.com/gugustinette/ecosystem-ci/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gugustinette/ecosystem-ci.git"
+  },
+  "author": "Augustin Mercier <gugustinette@proton.me>",
+  "funding": "https://github.com/sponsors/gugustinette",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint --cache .",
+    "lint:fix": "pnpm run lint --fix",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --cache --write .",
+    "release": "bumpp",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@sxzz/eslint-config": "^7.2.8",
+    "@sxzz/prettier-config": "^2.2.4",
+    "@types/node": "^24.10.0",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "tsdown": "^0.16.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "prettier": "@sxzz/prettier-config"
+}
