@@ -14,6 +14,9 @@ importers:
       cac:
         specifier: ^6.7.14
         version: 6.7.14
+      giget:
+        specifier: ^2.0.0
+        version: 2.0.0
       unconfig-core:
         specifier: ^7.4.0
         version: 7.4.0

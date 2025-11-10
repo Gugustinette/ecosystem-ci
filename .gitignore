@@ -1,6 +1,8 @@
 node_modules
 dist
 
+.ecosystem-ci
+
 *.log
 .DS_Store
 .eslintcache

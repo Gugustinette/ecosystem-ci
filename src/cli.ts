@@ -12,11 +12,13 @@ cli.help().version(pkg.version)
 interface CliOptions {
   config?: string
   debug?: boolean
+  force?: boolean
 }
 
 interface ResolvedCliOptions {
   config: string
   debug: boolean
+  force: boolean
 }
 
 cli
@@ -26,6 +28,7 @@ cli
   })
   .option('-c, --config <filename>', 'Use a custom config file')
   .option('--debug', 'Enable debug mode')
+  .option('--force', 'Force re-cloning of repositories')
   .action(async (options: CliOptions) => {
     console.info(`ecosystem-ci ${dim`v${pkg.version}`}`)
 
@@ -33,6 +36,7 @@ cli
     const resolvedCliOptions: ResolvedCliOptions = {
       config: options.config || 'ecosystem-ci.config.ts',
       debug: options.debug || false,
+      force: options.force || false,
     }
 
     // Load config file
@@ -40,8 +44,9 @@ cli
 
     // Run ecosystem-ci
     await ecosystemCi({
-      debug: resolvedCliOptions.debug,
       ...config,
+      debug: resolvedCliOptions.debug,
+      force: resolvedCliOptions.force,
     })
   })
 
@@ -50,7 +55,8 @@ export async function runCLI(): Promise<void> {
 
   try {
     await cli.runMatchedCommand()
-  } catch {
+  } catch (error) {
+    console.error(error)
     process.exit(1)
   }
 }

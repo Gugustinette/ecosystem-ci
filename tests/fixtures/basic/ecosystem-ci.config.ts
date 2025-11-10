@@ -5,6 +5,7 @@ const _default_1: ResolvedOptions = defineConfig({
   ecosystem: [
     {
       name: 'vite',
+      repository: 'gh:vitejs/vite',
       actions: ['pnpm i', 'pnpm run build'],
     },
   ],
