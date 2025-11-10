@@ -25,6 +25,9 @@
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
+  "bin": {
+    "ecosystem-ci": "./dist/cli.mjs"
+  },
   "publishConfig": {
     "access": "public"
   },

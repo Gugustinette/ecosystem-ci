@@ -45,21 +45,11 @@ export async function ecosystemCi(options: Options): Promise<void> {
     for (const action of pkg.actions) {
       console.info(`  Executing action: ${action}`)
       const childProcess = await import('node:child_process')
-      const execEnv = {
-        ...process.env,
-        npm_config_local_prefix: pkgDir,
-        npm_config_prefix: pkgDir,
-        npm_config_userconfig: path.join(pkgDir, '.npmrc'),
-        NPM_CONFIG_LOCAL_PREFIX: pkgDir,
-        NPM_CONFIG_PREFIX: pkgDir,
-        NPM_CONFIG_USERCONFIG: path.join(pkgDir, '.npmrc'),
-        PNPM_WORKSPACE_DIR: pkgDir,
-        YARN_IGNORE_PATH: '1',
-      }
-
       childProcess.execSync(action, {
         cwd: pkgDir,
-        env: execEnv,
+        env: {
+          ...process.env,
+        },
         stdio: ['inherit', 'ignore', 'inherit'],
       })
     }

@@ -6,7 +6,7 @@ const _default_1: ResolvedOptions = defineConfig({
     {
       name: 'vite',
       repository: 'gh:vitejs/vite',
-      actions: ['pnpm i', 'pnpm run build'],
+      actions: ['pnpm i', 'pnpm run build', 'pnpm run test-unit'],
     },
   ],
 })
