@@ -18,11 +18,11 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./dist/index.js",
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -32,13 +32,19 @@
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
     "build": "tsdown",
-    "dev": "tsdown --watch",
+    "dev": "tsdown && clear && node ./dist/cli.mjs",
     "test": "vitest",
-    "test:run": "vitest run",
+    "test:run": "pnpm run build && vitest run",
     "typecheck": "tsc --noEmit",
     "format": "prettier --cache --write .",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "ansis": "^4.2.0",
+    "cac": "^6.7.14",
+    "unconfig-core": "^7.4.0",
+    "unrun": "^0.2.7"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^7.2.8",

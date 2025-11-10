@@ -1,6 +1,8 @@
-import { expect, test } from 'vitest'
-import { foo } from '../src'
+import { fileURLToPath } from 'node:url'
+import { test } from 'vitest'
+import { runCli } from './utils/run-cli'
 
-test('simple', () => {
-  expect(foo).toBe('foo')
+test('runs cli against basic fixture', async () => {
+  const fixtureDir = fileURLToPath(new URL('fixtures/basic/', import.meta.url))
+  await runCli([], { cwd: fixtureDir })
 })
