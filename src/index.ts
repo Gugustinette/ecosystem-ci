@@ -1,3 +1,4 @@
+import { execSync, type ExecException } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
@@ -21,13 +22,20 @@ export async function ecosystemCi(options: Options): Promise<void> {
   const tempDir = path.join(process.cwd(), '.ecosystem-ci')
   fs.mkdirSync(tempDir, { recursive: true })
 
+  // If force option is enabled, remove temp directory contents
+  if (resolvedOptions.force) {
+    console.info(`Force option enabled. Removing contents of ${tempDir}...`)
+    fs.rmSync(tempDir, { recursive: true, force: true })
+    fs.mkdirSync(tempDir, { recursive: true })
+  }
+
   // Clone each repository
   for (const pkg of resolvedOptions.ecosystem) {
     // Determine the package directory
     const pkgDir = path.join(tempDir, pkg.name)
 
-    // Verify if the package directory exists already (unless force is true)
-    if (fs.existsSync(pkgDir) && !resolvedOptions.force) {
+    // Verify if the package directory exists already
+    if (fs.existsSync(pkgDir)) {
       console.info(`Package ${pkg.name} already cloned. Skipping clone.`)
     }
     // Else, clone the repository
@@ -37,21 +45,89 @@ export async function ecosystemCi(options: Options): Promise<void> {
     }
   }
 
+  // Replace npm imports and add pnpm overrides
+  for (const pkg of resolvedOptions.ecosystem) {
+    // Determine the package directory
+    const pkgDir = path.join(tempDir, pkg.name)
+    const packageJsonPath = path.join(pkgDir, 'package.json')
+    const packageJson = JSON.parse(
+      fs.readFileSync(packageJsonPath, 'utf8'),
+    ) as {
+      dependencies?: Record<string, string>
+      devDependencies?: Record<string, string>
+      pnpm?: { overrides?: Record<string, string> }
+    }
+
+    // Function to replace import in dependencies or devDependencies
+    const replaceImport = (deps: Record<string, string> | undefined) => {
+      if (!deps) return
+      for (const depName of Object.keys(deps)) {
+        if (depName === resolvedOptions.name) {
+          deps[depName] = resolvedOptions.npmImportReplacement
+          console.info(
+            `Replaced npm import for package ${pkg.name} in ${packageJsonPath}.`,
+          )
+        }
+      }
+    }
+
+    // Replace npm imports in dependencies and devDependencies
+    replaceImport(packageJson.dependencies)
+    replaceImport(packageJson.devDependencies)
+
+    // Add pnpm overrides if any
+    if (pkg.pnpmOverrides) {
+      packageJson.pnpm = packageJson.pnpm || {}
+      packageJson.pnpm.overrides = {
+        ...packageJson.pnpm.overrides,
+        ...pkg.pnpmOverrides,
+      }
+      console.info(
+        `Added pnpm overrides for package ${pkg.name} in ${packageJsonPath}.`,
+      )
+    }
+
+    // Write back the modified package.json
+    fs.writeFileSync(
+      packageJsonPath,
+      JSON.stringify(packageJson, null, 2),
+      'utf8',
+    )
+  }
+
   // Run actions for each package
   for (const pkg of resolvedOptions.ecosystem) {
     const pkgDir = path.join(tempDir, pkg.name)
     console.info(`Running actions for package ${pkg.name}...`)
-
     for (const action of pkg.actions) {
       console.info(`  Executing action: ${action}`)
-      const childProcess = await import('node:child_process')
-      childProcess.execSync(action, {
-        cwd: pkgDir,
-        env: {
-          ...process.env,
-        },
-        stdio: ['inherit', 'ignore', 'inherit'],
-      })
+      try {
+        execSync(action, {
+          cwd: pkgDir,
+          env: {
+            ...process.env,
+          },
+          stdio: 'pipe',
+        })
+      } catch (error) {
+        const execError = error as ExecException
+        const stdout = execError.stdout
+          ? execError.stdout.toString().trimEnd()
+          : ''
+        const stderr = execError.stderr
+          ? execError.stderr.toString().trimEnd()
+          : ''
+        const message = [
+          `Failed to execute action "${action}" for package ${pkg.name}.`,
+          stderr && `stderr:\n${stderr}`,
+          stdout && `stdout:\n${stdout}`,
+          !stdout && !stderr && execError.message,
+        ]
+          .filter(Boolean)
+          .join('\n')
+
+        throw new Error(message)
+      }
     }
   }
 

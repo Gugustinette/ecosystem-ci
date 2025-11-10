@@ -18,7 +18,7 @@ export async function runCli(
       process.chdir(options.cwd)
     }
 
-    process.argv = ['node', 'ecosystem-ci', ...args]
+    process.argv = ['node', 'ecosystem-ci', '--force', ...args]
 
     vi.resetModules()
     await import(cliUrl.href)

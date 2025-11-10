@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ecosystem-ci > should run with mocked unrun successfully > unrun-console 1`] = `
+{
+  "stderr": "",
+  "stdout": "ecosystem-ci v0.0.0
+Force option enabled. Removing contents of <cwd>.ecosystem-ci...
+Cloning package vite into <cwd>.ecosystem-ci<path>
+Added pnpm overrides for package vite in <cwd>.ecosystem-ci<path>
+Running actions for package vite...
+  Executing action: pnpm i
+  Executing action: pnpm run build
+  Executing action: pnpm run test-unit",
+}
+`;

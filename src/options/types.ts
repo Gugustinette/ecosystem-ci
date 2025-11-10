@@ -15,6 +15,18 @@ export interface EcosystemPackage {
    * Actions to perform for this package.
    */
   actions: string[]
+
+  /**
+   * Additional pnpm overrides for this package.
+   * @example
+   * ```jsonc
+   * {
+   *   // Override the version of "my-package" when imported by "vite"
+   *   "vite@*>my-package": "file:../../"
+   * }
+   * ```
+   */
+  pnpmOverrides?: Record<string, string>
 }
 
 export interface Options {
@@ -23,6 +35,12 @@ export interface Options {
    * @default 'ecosystem-ci'
    */
   name?: string
+
+  /**
+   * String to replace npm import with within cloned repositories.
+   * @default 'file:../../[name]'
+   */
+  npmImportReplacement?: string
 
   /**
    * Debug mode.
@@ -48,6 +66,12 @@ export interface ResolvedOptions {
    * @default 'ecosystem-ci'
    */
   name: string
+
+  /**
+   * String to replace npm import with within cloned repositories.
+   * @default 'file:../../[name]'
+   */
+  npmImportReplacement: string
 
   /**
    * Debug mode.
