@@ -1,8 +1,8 @@
 {
-  "name": "ecosystem-ci",
-  "version": "0.0.0",
+  "name": "test-ecosystem-ci",
+  "version": "0.0.1",
   "packageManager": "pnpm@10.21.0",
-  "description": "My awesome typescript library",
+  "description": "Run CI across the ecosystem",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/gugustinette/ecosystem-ci#readme",
