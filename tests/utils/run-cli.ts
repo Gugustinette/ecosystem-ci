@@ -1,31 +1,55 @@
+import { spawnSync } from 'node:child_process'
 import process from 'node:process'
-import { vi } from 'vitest'
+import { fileURLToPath } from 'node:url'
 
 export interface RunCliOptions {
+  args?: string[]
   cwd?: string
 }
 
-export async function runCli(
-  args: string[] = [],
-  options: RunCliOptions = {},
-): Promise<void> {
+export interface RunCliResult {
+  stdout: string
+  stderr: string
+  status: number | null
+}
+
+export function runCli(options: RunCliOptions = {}): RunCliResult {
+  // Store original working directory
+  const originalCwd = process.cwd()
+
+  // Prepare CLI execution
+  const nodePath = process.execPath
   const cliUrl = new URL('../../dist/cli.mjs', import.meta.url)
-  const previousArgv = process.argv
-  const previousCwd = process.cwd()
+  const cliArgv = [
+    '--force',
+    '--config-loader',
+    'unrun',
+    ...(options.args || []),
+  ]
+  const cliCwd = options.cwd || process.cwd()
 
   try {
-    if (options.cwd) {
-      process.chdir(options.cwd)
+    // Change working directory
+    process.chdir(cliCwd)
+
+    // Run the CLI in a child process and capture stdout/stderr
+    const result = spawnSync(nodePath, [fileURLToPath(cliUrl), ...cliArgv], {
+      cwd: cliCwd,
+      encoding: 'utf8',
+      stdio: 'pipe',
+    })
+
+    if (result.error) {
+      throw result.error
     }
 
-    process.argv = ['node', 'ecosystem-ci', '--force', ...args]
-
-    vi.resetModules()
-    await import(cliUrl.href)
+    return {
+      stdout: result.stdout || '',
+      stderr: result.stderr || '',
+      status: result.status,
+    }
   } finally {
-    process.argv = previousArgv
-    if (options.cwd) {
-      process.chdir(previousCwd)
-    }
+    // Restore original working directory
+    process.chdir(originalCwd)
   }
 }

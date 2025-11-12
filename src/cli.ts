@@ -11,12 +11,14 @@ cli.help().version(pkg.version)
 
 interface CliOptions {
   config?: string
+  configLoader?: 'auto' | 'native' | 'unrun'
   debug?: boolean
   force?: boolean
 }
 
 interface ResolvedCliOptions {
   config: string
+  configLoader: 'auto' | 'native' | 'unrun'
   debug: boolean
   force: boolean
 }
@@ -27,20 +29,28 @@ cli
     allowUnknownOptions: true,
   })
   .option('-c, --config <filename>', 'Use a custom config file')
+  .option(
+    '--config-loader <loader>',
+    'Specify config loader (auto | native | unrun)',
+  )
   .option('--debug', 'Enable debug mode')
   .option('--force', 'Force re-cloning of repositories')
   .action(async (options: CliOptions) => {
-    console.info(`ecosystem-ci ${dim`v${pkg.version}`}`)
+    console.info(`Running ${dim('ecosystem-ci')}...`)
 
     // Resolve Cli options
     const resolvedCliOptions: ResolvedCliOptions = {
-      config: options.config || 'ecosystem-ci.config.ts',
+      config: options.config || 'ecosystem-ci.config',
+      configLoader: options.configLoader || 'auto',
       debug: options.debug || false,
       force: options.force || false,
     }
 
     // Load config file
-    const config: Options = await loadConfig(resolvedCliOptions.config)
+    const config: Options = await loadConfig(
+      resolvedCliOptions.configLoader,
+      resolvedCliOptions.config,
+    )
 
     // Run ecosystem-ci
     await ecosystemCi({

@@ -131,5 +131,8 @@ export async function ecosystemCi(options: Options): Promise<void> {
     }
   }
 
+  // Done
+  console.info('Ran ecosystem-ci successfully.')
+
   await Promise.resolve()
 }

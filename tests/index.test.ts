@@ -1,47 +1,88 @@
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, test } from 'vitest'
-import { captureConsole } from './utils/capture-console'
 import { normalizeOutput } from './utils/normalize-output'
 import { runCli } from './utils/run-cli'
 
 describe('ecosystem-ci', () => {
-  test('should run with mocked unrun successfully', async () => {
+  test('should apply basic npm file:../../ override (tsdown-obug success)', () => {
     const fixtureDir = fileURLToPath(
-      new URL('fixtures/unrun/', import.meta.url),
+      new URL('fixtures/tsdown-obug/', import.meta.url),
     )
 
-    // Capture console output
-    const { stdout, stderr } = await captureConsole(() =>
-      runCli([], { cwd: fixtureDir }),
-    )
+    // Run ecosystem-ci
+    const result = runCli({ cwd: fixtureDir })
 
     // Snapshot console output
     expect({
-      stdout: normalizeOutput(stdout, fixtureDir),
-      stderr: normalizeOutput(stderr, fixtureDir),
-    }).toMatchSnapshot('unrun-console')
+      stdout: normalizeOutput(result.stdout, fixtureDir),
+      stderr: normalizeOutput(result.stderr, fixtureDir),
+    }).toMatchSnapshot('ecosystem-ci-output')
+    // Check exit status
+    expect(result.status).toBe(0)
   })
 
-  test('should throw error with intentional unrun failure', async () => {
+  test('should apply basic npm file:../../ override (tsdown-obug failure)', () => {
     const fixtureDir = fileURLToPath(
-      new URL('fixtures/unrun-error/', import.meta.url),
+      new URL('fixtures/tsdown-obug-error/', import.meta.url),
     )
 
-    let exitError: unknown
+    // Run ecosystem-ci
+    const result = runCli({ cwd: fixtureDir })
 
-    // Capture console output even when the CLI terminates with process.exit
-    const { stderr } = await captureConsole(async () => {
-      try {
-        await runCli([], { cwd: fixtureDir })
-      } catch (error) {
-        exitError = error
-      }
-    })
+    // Snapshot console output
+    expect({
+      stdout: normalizeOutput(result.stdout, fixtureDir),
+      stderr: normalizeOutput(result.stderr, fixtureDir),
+    }).toMatchSnapshot('ecosystem-ci-output')
+    // Check exit status
+    expect(result.status).toBe(1)
+    expect(result.stderr).toContain('Intentional failure from obug package')
+  })
 
-    expect(exitError).toBeInstanceOf(Error)
-    expect((exitError as Error).message).toBe(
-      'process.exit unexpectedly called with "1"',
+  test('should apply pnpm override (vite-unrun success)', () => {
+    const fixtureDir = fileURLToPath(
+      new URL('fixtures/vite-unrun/', import.meta.url),
     )
-    expect(stderr).toContain('Force throw for testing purposes')
+
+    // Run ecosystem-ci
+    const result = runCli({ cwd: fixtureDir })
+
+    // Snapshot console output
+    expect({
+      stdout: normalizeOutput(result.stdout, fixtureDir),
+      stderr: normalizeOutput(result.stderr, fixtureDir),
+    }).toMatchSnapshot('ecosystem-ci-output')
+    // Check exit status
+    expect(result.status).toBe(0)
+  })
+
+  test('should apply pnpm override (vite-unrun failure on Node 20)', () => {
+    const fixtureDir = fileURLToPath(
+      new URL('fixtures/vite-unrun-error-node-20/', import.meta.url),
+    )
+
+    // Run ecosystem-ci
+    const result = runCli({ cwd: fixtureDir })
+
+    // Error only happens on Node.js <= 20
+    // as tsdown won't use unrun on Node.js > 20
+    const nodeMajor = Number(process.versions.node.split('.')[0])
+    if (Number.isNaN(nodeMajor) || nodeMajor <= 20) {
+      // Snapshot console output
+      expect({
+        stdout: normalizeOutput(result.stdout, fixtureDir),
+        stderr: normalizeOutput(result.stderr, fixtureDir),
+      }).toMatchSnapshot('ecosystem-ci-output')
+      // Check exit status
+      expect(result.status).toBe(1)
+      expect(result.stderr).toContain('Intentional unrun failure on Node 20')
+    } else {
+      // Snapshot console output
+      expect({
+        stdout: normalizeOutput(result.stdout, fixtureDir),
+        stderr: normalizeOutput(result.stderr, fixtureDir),
+      }).toMatchSnapshot('ecosystem-ci-output')
+    }
   })
 })

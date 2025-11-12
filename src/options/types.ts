@@ -69,7 +69,7 @@ export interface ResolvedOptions {
 
   /**
    * String to replace npm import with within cloned repositories.
-   * @default 'file:../../[name]'
+   * @default 'file:../../'
    */
   npmImportReplacement: string
 

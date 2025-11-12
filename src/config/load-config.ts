@@ -6,19 +6,21 @@ import { createConfigCoreLoader } from 'unconfig-core'
 
 type Parser = 'native' | 'unrun'
 
-export async function loadConfig(cwd: string): Promise<any> {
-  const loader = resolveConfigLoader()
+export async function loadConfig(
+  configLoader: string,
+  configFile?: string,
+): Promise<any> {
+  const loader = resolveConfigLoader(configLoader)
   const parser = createParser(loader)
 
   const [result] = await createConfigCoreLoader({
     sources: [
       {
-        files: ['ecosystem-ci.config'],
+        files: [configFile || 'ecosystem-ci.config'],
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
         parser,
       },
     ],
-    cwd,
   }).load()
 
   if (!result) {
@@ -29,13 +31,21 @@ export async function loadConfig(cwd: string): Promise<any> {
   return await config
 }
 
-function resolveConfigLoader(): Parser {
-  const nativeTS = !!(
-    process.features.typescript ||
-    process.versions.bun ||
-    process.versions.deno
-  )
-  return nativeTS ? 'native' : 'unrun'
+function resolveConfigLoader(configLoader: string): Parser {
+  if (configLoader === 'auto') {
+    const nativeTS = !!(
+      process.features.typescript ||
+      process.versions.bun ||
+      process.versions.deno
+    )
+    return nativeTS ? 'native' : 'unrun'
+  } else if (configLoader === 'native' || configLoader === 'unrun') {
+    return configLoader
+  } else {
+    throw new Error(
+      `Invalid config loader: ${configLoader}. Expected 'auto', 'native' or 'unrun'.`,
+    )
+  }
 }
 
 function createParser(loader: Parser) {

@@ -47,17 +47,18 @@
     "ansis": "^4.2.0",
     "cac": "^6.7.14",
     "giget": "^2.0.0",
-    "unconfig-core": "^7.4.0",
-    "unrun": "^0.2.7"
+    "unconfig-core": "^7.4.1",
+    "unrun": "^0.2.8"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^7.2.8",
+    "@sxzz/eslint-config": "^7.2.10",
     "@sxzz/prettier-config": "^2.2.4",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "bumpp": "^10.3.1",
     "eslint": "^9.39.1",
+    "obug": "^0.1.3",
     "prettier": "^3.6.2",
-    "tsdown": "^0.16.1",
+    "tsdown": "^0.16.3",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   },
