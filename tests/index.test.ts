@@ -49,16 +49,15 @@ describe('ecosystem-ci', () => {
     // Run ecosystem-ci
     const result = runCli({ cwd: fixtureDir })
 
-    // Error only happens on Node.js <= 20
-    // as tsdown won't use unrun on Node.js > 20
-    const nodeMajor = Number(process.versions.node.split('.')[0])
-    if (Number.isNaN(nodeMajor) || nodeMajor <= 20) {
+    // Error only happens if typescript is available
+    // otherwise tsdown won't use unrun
+    if (process.features.typescript) {
+      // Check exit status
+      expect(result.status).toBe(0)
+    } else {
       // Check exit status
       expect(result.status).toBe(1)
       expect(result.stderr).toContain('Intentional unrun failure on Node 20')
-    } else {
-      // Check exit status
-      expect(result.status).toBe(0)
     }
   })
 })

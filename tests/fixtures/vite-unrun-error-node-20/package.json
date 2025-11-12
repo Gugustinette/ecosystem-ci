@@ -1,20 +1,9 @@
 {
-  "name": "unrun",
+  "name": "unrun-local",
   "version": "0.2.8",
   "packageManager": "pnpm@10.20.0",
   "description": "A tool to load and execute any JavaScript or TypeScript code at runtime.",
   "type": "module",
-  "license": "MIT",
-  "homepage": "https://gugustinette.github.io/unrun/",
-  "bugs": {
-    "url": "https://github.com/Gugustinette/unrun/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gugustinette/unrun.git"
-  },
-  "author": "Augustin Mercier <gugustinette@proton.me>",
-  "funding": "https://github.com/sponsors/Gugustinette",
   "files": [
     "src"
   ],
@@ -28,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "unrun-npm": "npm:unrun@0.2.8"
+    "unrun": "0.2.8"
   },
   "devDependencies": {}
 }
