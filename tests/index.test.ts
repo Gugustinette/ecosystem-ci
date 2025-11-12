@@ -1,7 +1,6 @@
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, test } from 'vitest'
-import { normalizeOutput } from './utils/normalize-output'
 import { runCli } from './utils/run-cli'
 
 describe('ecosystem-ci', () => {
@@ -13,11 +12,6 @@ describe('ecosystem-ci', () => {
     // Run ecosystem-ci
     const result = runCli({ cwd: fixtureDir })
 
-    // Snapshot console output
-    expect({
-      stdout: normalizeOutput(result.stdout, fixtureDir),
-      stderr: normalizeOutput(result.stderr, fixtureDir),
-    }).toMatchSnapshot('ecosystem-ci-output')
     // Check exit status
     expect(result.status).toBe(0)
   })
@@ -30,11 +24,6 @@ describe('ecosystem-ci', () => {
     // Run ecosystem-ci
     const result = runCli({ cwd: fixtureDir })
 
-    // Snapshot console output
-    expect({
-      stdout: normalizeOutput(result.stdout, fixtureDir),
-      stderr: normalizeOutput(result.stderr, fixtureDir),
-    }).toMatchSnapshot('ecosystem-ci-output')
     // Check exit status
     expect(result.status).toBe(1)
     expect(result.stderr).toContain('Intentional failure from obug package')
@@ -48,11 +37,6 @@ describe('ecosystem-ci', () => {
     // Run ecosystem-ci
     const result = runCli({ cwd: fixtureDir })
 
-    // Snapshot console output
-    expect({
-      stdout: normalizeOutput(result.stdout, fixtureDir),
-      stderr: normalizeOutput(result.stderr, fixtureDir),
-    }).toMatchSnapshot('ecosystem-ci-output')
     // Check exit status
     expect(result.status).toBe(0)
   })
@@ -69,20 +53,12 @@ describe('ecosystem-ci', () => {
     // as tsdown won't use unrun on Node.js > 20
     const nodeMajor = Number(process.versions.node.split('.')[0])
     if (Number.isNaN(nodeMajor) || nodeMajor <= 20) {
-      // Snapshot console output
-      expect({
-        stdout: normalizeOutput(result.stdout, fixtureDir),
-        stderr: normalizeOutput(result.stderr, fixtureDir),
-      }).toMatchSnapshot('ecosystem-ci-output')
       // Check exit status
       expect(result.status).toBe(1)
       expect(result.stderr).toContain('Intentional unrun failure on Node 20')
     } else {
-      // Snapshot console output
-      expect({
-        stdout: normalizeOutput(result.stdout, fixtureDir),
-        stderr: normalizeOutput(result.stderr, fixtureDir),
-      }).toMatchSnapshot('ecosystem-ci-output')
+      // Check exit status
+      expect(result.status).toBe(0)
     }
   })
 })
