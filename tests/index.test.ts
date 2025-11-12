@@ -41,9 +41,9 @@ describe('ecosystem-ci', () => {
     expect(result.status).toBe(0)
   })
 
-  test('should apply pnpm override (vite-unrun failure on Node 20)', () => {
+  test('should apply pnpm override (vite-unrun failure)', () => {
     const fixtureDir = fileURLToPath(
-      new URL('fixtures/vite-unrun-error-node-20/', import.meta.url),
+      new URL('fixtures/vite-unrun-error/', import.meta.url),
     )
 
     // Run ecosystem-ci
@@ -57,7 +57,7 @@ describe('ecosystem-ci', () => {
     } else {
       // Check exit status
       expect(result.status).toBe(1)
-      expect(result.stderr).toContain('Intentional unrun failure on Node 20')
+      expect(result.stderr).toContain('Intentional unrun failure')
     }
   })
 })
