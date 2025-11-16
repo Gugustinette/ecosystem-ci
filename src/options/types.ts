@@ -1,3 +1,38 @@
+export interface GithubRepositoryConfig {
+  /**
+   * GitHub repository in the form of `owner/name`.
+   */
+  repo: string
+
+  /**
+   * Branch to clone. Defaults to `main` when neither branch nor commit is provided.
+   */
+  branch?: string
+
+  /**
+   * Commit SHA to clone. Takes precedence over branch when provided.
+   */
+  commit?: string
+}
+
+export interface RepositoryObject {
+  /**
+   * Direct URL supported by giget (e.g. tarball URL).
+   */
+  url?: string
+
+  /**
+   * GitHub repository descriptor.
+   */
+  github?: GithubRepositoryConfig
+}
+
+export type RepositoryDescriptor = string | RepositoryObject
+
+export type PackageAction = string | (() => unknown | Promise<unknown>)
+
+export type PatchFileHandler = (content: string) => string
+
 export interface EcosystemPackage {
   /**
    * Name of the package in the ecosystem.
@@ -5,16 +40,9 @@ export interface EcosystemPackage {
   name: string
 
   /**
-   * Repository URL (e.g. 'https://api.github.com/repos/[OWNER]/[REPOSITORY]/tarball/main')
-   * or shorthand (e.g., 'gh:[OWNER]/[REPOSITORY]')
-   * of the package.
+   * Repository location (string shorthand or object descriptor).
    */
-  repository: string
-
-  /**
-   * Actions to perform for this package.
-   */
-  actions: string[]
+  repository: RepositoryDescriptor
 
   /**
    * Additional pnpm overrides for this package.
@@ -27,6 +55,16 @@ export interface EcosystemPackage {
    * ```
    */
   pnpmOverrides?: Record<string, string>
+
+  /**
+   * Optional file patches executed before actions.
+   */
+  patchFiles?: Record<string, PatchFileHandler>
+
+  /**
+   * Actions to perform for this package.
+   */
+  actions: PackageAction[]
 }
 
 export interface Options {
@@ -41,6 +79,12 @@ export interface Options {
    * @default 'file:../../[name]'
    */
   npmImportReplacement?: string
+
+  /**
+   * Relative path to the package under test (useful for monorepos).
+   * @default '.'
+   */
+  packageLocation?: string
 
   /**
    * Debug mode.
@@ -69,9 +113,15 @@ export interface ResolvedOptions {
 
   /**
    * String to replace npm import with within cloned repositories.
-   * @default 'file:../../'
+   * @default Derived from `packageLocation` (e.g. 'file:../../packages/foo')
    */
   npmImportReplacement: string
+
+  /**
+   * Relative path to the package under test (useful for monorepos).
+   * @default '.'
+   */
+  packageLocation: string
 
   /**
    * Debug mode.

@@ -16,7 +16,7 @@
     "access": "public"
   },
   "dependencies": {
-    "obug": "0.1.3"
+    "obug": "^1.0.0"
   },
   "devDependencies": {}
 }

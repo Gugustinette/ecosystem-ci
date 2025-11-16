@@ -1,7 +1,8 @@
 {
-  "name": "obug-local",
-  "version": "0.1.3",
+  "name": "unrun",
+  "version": "0.2.8",
   "packageManager": "pnpm@10.20.0",
+  "description": "A tool to load and execute any JavaScript or TypeScript code at runtime.",
   "type": "module",
   "files": [
     "src"
@@ -16,7 +17,6 @@
     "access": "public"
   },
   "dependencies": {
-    "obug": "^1.0.0"
-  },
-  "devDependencies": {}
+    "unrun": "0.2.8"
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "unrun-workspace",
+  "version": "0.2.8",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "workspaces": [
+    "packages/unrun"
+  ],
+  "scripts": {
+    "dev": "node ./packages/unrun/src/index.mjs"
+  }
+}

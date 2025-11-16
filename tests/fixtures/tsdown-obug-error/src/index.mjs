@@ -1,6 +1,5 @@
-import obug from 'obug'
+export * from 'obug'
 
-export default function Debug(...options) {
+export function createDebug() {
   throw new Error('Intentional failure from obug package')
-  return obug(...options)
 }

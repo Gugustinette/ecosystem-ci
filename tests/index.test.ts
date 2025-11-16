@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, test } from 'vitest'
@@ -59,5 +61,33 @@ describe('ecosystem-ci', () => {
       expect(result.status).toBe(1)
       expect(result.stderr).toContain('Intentional unrun failure')
     }
+  })
+
+  test('should respect packageLocation for monorepo fixture', () => {
+    const fixtureDir = fileURLToPath(
+      new URL('fixtures/vite-monorepo/', import.meta.url),
+    )
+
+    const result = runCli({ cwd: fixtureDir })
+
+    expect(result.status).toBe(0)
+
+    const packageJsonPath = path.join(
+      fixtureDir,
+      '.ecosystem-ci',
+      'vite',
+      'package.json',
+    )
+    const packageJson = JSON.parse(
+      fs.readFileSync(packageJsonPath, 'utf8'),
+    ) as {
+      dependencies?: Record<string, string>
+      devDependencies?: Record<string, string>
+    }
+
+    const resolvedDep =
+      packageJson.dependencies?.unrun || packageJson.devDependencies?.unrun
+
+    expect(resolvedDep).toBe('workspace:*')
   })
 })
