@@ -69,9 +69,9 @@ npx ecosystem-ci
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/ecosystem-ci.svg
-[npm-version-href]: https://npmjs.com/package/ecosystem-ci
-[npm-downloads-src]: https://img.shields.io/npm/dm/ecosystem-ci
-[npm-downloads-href]: https://www.npmcharts.com/compare/ecosystem-ci?interval=30
+[npm-version-src]: https://img.shields.io/npm/v/test-ecosystem-ci.svg
+[npm-version-href]: https://npmjs.com/package/test-ecosystem-ci
+[npm-downloads-src]: https://img.shields.io/npm/dm/test-ecosystem-ci
+[npm-downloads-href]: https://www.npmcharts.com/compare/test-ecosystem-ci?interval=30
 [unit-test-src]: https://github.com/gugustinette/ecosystem-ci/actions/workflows/unit-test.yml/badge.svg
 [unit-test-href]: https://github.com/gugustinette/ecosystem-ci/actions/workflows/unit-test.yml

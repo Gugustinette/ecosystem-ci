@@ -6,14 +6,14 @@
   "description": "Run CI across the ecosystem",
   "author": "Augustin Mercier <gugustinette@proton.me>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/gugustinette",
-  "homepage": "https://github.com/gugustinette/ecosystem-ci#readme",
+  "funding": "https://github.com/sponsors/Gugustinette",
+  "homepage": "https://github.com/Gugustinette/ecosystem-ci#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gugustinette/ecosystem-ci.git"
+    "url": "git+https://github.com/Gugustinette/ecosystem-ci.git"
   },
   "bugs": {
-    "url": "https://github.com/gugustinette/ecosystem-ci/issues"
+    "url": "https://github.com/Gugustinette/ecosystem-ci/issues"
   },
   "exports": {
     ".": "./dist/index.mjs",
