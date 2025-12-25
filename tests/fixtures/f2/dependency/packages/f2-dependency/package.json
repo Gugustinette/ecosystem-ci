@@ -1,0 +1,6 @@
+{
+  "name": "f2-dependency",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./src/index.mjs"
+}

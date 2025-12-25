@@ -1,0 +1,6 @@
+{
+  "name": "f1-dependency",
+  "type": "module",
+  "version": "0.0.2",
+  "main": "./src/index.mjs"
+}
