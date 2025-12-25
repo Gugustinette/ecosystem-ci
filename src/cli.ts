@@ -3,8 +3,8 @@ import { dim } from 'ansis'
 import { cac } from 'cac'
 import pkg from '../package.json' with { type: 'json' }
 import { loadConfig } from './config/load-config'
-import type { Options } from './options/types'
 import { ecosystemCi } from './index'
+import type { Options } from './options/types'
 
 const cli = cac('ecosystem-ci')
 cli.help().version(pkg.version)

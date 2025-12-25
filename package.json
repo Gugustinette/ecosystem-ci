@@ -1,35 +1,38 @@
 {
   "name": "test-ecosystem-ci",
+  "type": "module",
   "version": "0.0.2",
   "packageManager": "pnpm@10.21.0",
   "description": "Run CI across the ecosystem",
-  "type": "module",
+  "author": "Augustin Mercier <gugustinette@proton.me>",
   "license": "MIT",
+  "funding": "https://github.com/sponsors/gugustinette",
   "homepage": "https://github.com/gugustinette/ecosystem-ci#readme",
-  "bugs": {
-    "url": "https://github.com/gugustinette/ecosystem-ci/issues"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gugustinette/ecosystem-ci.git"
   },
-  "author": "Augustin Mercier <gugustinette@proton.me>",
-  "funding": "https://github.com/sponsors/gugustinette",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "bugs": {
+    "url": "https://github.com/gugustinette/ecosystem-ci/issues"
+  },
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "bin": {
     "ecosystem-ci": "./dist/cli.mjs"
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   },
   "scripts": {
     "lint": "eslint --cache .",
@@ -61,9 +64,6 @@
     "tsdown": "^0.16.8",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
-  },
-  "engines": {
-    "node": ">=20.19.0"
   },
   "prettier": "@sxzz/prettier-config"
 }

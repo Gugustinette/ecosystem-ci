@@ -10,7 +10,7 @@ on:
       build:
         required: false
         type: string
-        default: ""
+        default: ''
 
 jobs:
   release:
