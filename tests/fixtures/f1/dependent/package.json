@@ -1,0 +1,11 @@
+{
+  "name": "f1-dependent",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node ./src/index.mjs"
+  },
+  "dependencies": {
+    "f1-dependency": "0.0.1"
+  }
+}
