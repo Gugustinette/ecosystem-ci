@@ -1,24 +1,24 @@
-import type { RepositoryDescriptor } from '../options/types'
+import type { RepositoryDescriptor } from "../options/types";
 
-const DEFAULT_BRANCH = 'main'
+const DEFAULT_BRANCH = "main";
 
 export function resolveRepo(descriptor: RepositoryDescriptor): string {
-  if (typeof descriptor === 'string') {
-    return descriptor
+  if (typeof descriptor === "string") {
+    return descriptor;
   }
 
   if (descriptor.url) {
-    return descriptor.url
+    return descriptor.url;
   }
 
   if (descriptor.github) {
-    const { repo, branch, commit } = descriptor.github
+    const { repo, branch, commit } = descriptor.github;
     if (!repo) {
-      throw new TypeError('GitHub repository name is required.')
+      throw new TypeError("GitHub repository name is required.");
     }
-    const ref = commit || branch || DEFAULT_BRANCH
-    return `github:${repo}${ref ? `#${ref}` : ''}`
+    const ref = commit || branch || DEFAULT_BRANCH;
+    return `github:${repo}${ref ? `#${ref}` : ""}`;
   }
 
-  throw new TypeError('Invalid repository descriptor provided.')
+  throw new TypeError("Invalid repository descriptor provided.");
 }

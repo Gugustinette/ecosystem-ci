@@ -1,43 +1,40 @@
-import type { Options, ResolvedOptions } from './types'
+import type { Options, ResolvedOptions } from "./types";
 
-const DEFAULT_PACKAGE_LOCATION = '.'
+const DEFAULT_PACKAGE_LOCATION = ".";
 
 export function resolveOptions(options: Options): ResolvedOptions {
-  const packageLocation = normalizePackageLocation(options.packageLocation)
+  const packageLocation = normalizePackageLocation(options.packageLocation);
 
   const resolvedOptions: ResolvedOptions = {
-    name: options.name || 'ecosystem-ci',
+    name: options.name || "ecosystem-ci",
     packageLocation,
     npmImportReplacement:
-      options.npmImportReplacement ||
-      buildDefaultImportReplacement(packageLocation),
+      options.npmImportReplacement || buildDefaultImportReplacement(packageLocation),
     debug: options.debug || false,
     force: options.force || false,
     ecosystem: options.ecosystem || [],
-  }
-  return resolvedOptions
+  };
+  return resolvedOptions;
 }
 
 function normalizePackageLocation(location?: string): string {
-  if (!location) return DEFAULT_PACKAGE_LOCATION
-  const trimmed = location.trim()
-  if (trimmed === '' || trimmed === '.' || trimmed === './') {
-    return DEFAULT_PACKAGE_LOCATION
+  if (!location) return DEFAULT_PACKAGE_LOCATION;
+  const trimmed = location.trim();
+  if (trimmed === "" || trimmed === "." || trimmed === "./") {
+    return DEFAULT_PACKAGE_LOCATION;
   }
   const normalized = trimmed
-    .replaceAll('\\', '/')
-    .replace(/^\.\//, '')
-    .replace(/^\/+/, '')
-    .replace(/\/+$/, '')
+    .replaceAll("\\", "/")
+    .replace(/^\.\//, "")
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "");
 
-  return normalized || DEFAULT_PACKAGE_LOCATION
+  return normalized || DEFAULT_PACKAGE_LOCATION;
 }
 
 function buildDefaultImportReplacement(packageLocation: string): string {
   const normalized =
-    packageLocation === DEFAULT_PACKAGE_LOCATION
-      ? ''
-      : packageLocation.replace(/\/+$/, '')
+    packageLocation === DEFAULT_PACKAGE_LOCATION ? "" : packageLocation.replace(/\/+$/, "");
 
-  return `file:../../${normalized}`
+  return `file:../../${normalized}`;
 }

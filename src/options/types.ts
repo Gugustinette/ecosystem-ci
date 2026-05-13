@@ -2,47 +2,47 @@ export interface GithubRepositoryConfig {
   /**
    * GitHub repository in the form of `owner/name`.
    */
-  repo: string
+  repo: string;
 
   /**
    * Branch to clone. Defaults to `main` when neither branch nor commit is provided.
    */
-  branch?: string
+  branch?: string;
 
   /**
    * Commit SHA to clone. Takes precedence over branch when provided.
    */
-  commit?: string
+  commit?: string;
 }
 
 export interface RepositoryObject {
   /**
    * Direct URL supported by giget (e.g. tarball URL).
    */
-  url?: string
+  url?: string;
 
   /**
    * GitHub repository descriptor.
    */
-  github?: GithubRepositoryConfig
+  github?: GithubRepositoryConfig;
 }
 
-export type RepositoryDescriptor = string | RepositoryObject
+export type RepositoryDescriptor = string | RepositoryObject;
 
-export type PackageAction = string | (() => unknown | Promise<unknown>)
+export type PackageAction = string | (() => unknown | Promise<unknown>);
 
-export type PatchFileHandler = (content: string) => string
+export type PatchFileHandler = (content: string) => string;
 
 export interface EcosystemPackage {
   /**
    * Name of the package in the ecosystem.
    */
-  name: string
+  name: string;
 
   /**
    * Repository location (string shorthand or object descriptor).
    */
-  repository: RepositoryDescriptor
+  repository: RepositoryDescriptor;
 
   /**
    * Additional pnpm overrides for this package.
@@ -54,17 +54,17 @@ export interface EcosystemPackage {
    * }
    * ```
    */
-  pnpmOverrides?: Record<string, string>
+  pnpmOverrides?: Record<string, string>;
 
   /**
    * Optional file patches executed before actions.
    */
-  patchFiles?: Record<string, PatchFileHandler>
+  patchFiles?: Record<string, PatchFileHandler>;
 
   /**
    * Actions to perform for this package.
    */
-  actions: PackageAction[]
+  actions: PackageAction[];
 }
 
 export interface Options {
@@ -72,36 +72,36 @@ export interface Options {
    * Name of the ecosystem-ci configuration.
    * @default 'ecosystem-ci'
    */
-  name?: string
+  name?: string;
 
   /**
    * String to replace npm import with within cloned repositories.
    * @default 'file:../../[name]'
    */
-  npmImportReplacement?: string
+  npmImportReplacement?: string;
 
   /**
    * Relative path to the package under test (useful for monorepos).
    * @default '.'
    */
-  packageLocation?: string
+  packageLocation?: string;
 
   /**
    * Debug mode.
    * @default false
    */
-  debug?: boolean
+  debug?: boolean;
 
   /**
    * Force re-cloning of repositories.
    * @default false
    */
-  force?: boolean
+  force?: boolean;
 
   /**
    * The ecosystem to run the CI against.
    */
-  ecosystem: EcosystemPackage[]
+  ecosystem: EcosystemPackage[];
 }
 
 export interface ResolvedOptions {
@@ -109,34 +109,34 @@ export interface ResolvedOptions {
    * Name of the ecosystem-ci configuration.
    * @default 'ecosystem-ci'
    */
-  name: string
+  name: string;
 
   /**
    * String to replace npm import with within cloned repositories.
    * @default Derived from `packageLocation` (e.g. 'file:../../packages/foo')
    */
-  npmImportReplacement: string
+  npmImportReplacement: string;
 
   /**
    * Relative path to the package under test (useful for monorepos).
    * @default '.'
    */
-  packageLocation: string
+  packageLocation: string;
 
   /**
    * Debug mode.
    * @default false
    */
-  debug: boolean
+  debug: boolean;
 
   /**
    * Force re-cloning of repositories.
    * @default false
    */
-  force: boolean
+  force: boolean;
 
   /**
    * The ecosystem to run the CI against.
    */
-  ecosystem: EcosystemPackage[]
+  ecosystem: EcosystemPackage[];
 }

@@ -20,45 +20,45 @@ npm i -D ecosystem-ci
    actions to run in each ecosystem package.
 
 ```ts
-import { defineConfig } from 'ecosystem-ci'
+import { defineConfig } from "ecosystem-ci";
 
 export default defineConfig({
   // required: name of the package to test in downstream repositories
-  name: 'my-package',
+  name: "my-package",
   // optional: override the default '.' location
-  packageLocation: './packages/my-package',
+  packageLocation: "./packages/my-package",
   // optional: override the default "file:../../packages/my-package" replacement
-  npmImportReplacement: 'file:../../packages/my-package',
+  npmImportReplacement: "file:../../packages/my-package",
   // describe the ecosystem repositories to test against
   ecosystem: [
     {
-      name: 'vite',
+      name: "vite",
       repository: {
         github: {
-          repo: 'vitejs/vite',
-          branch: 'main',
+          repo: "vitejs/vite",
+          branch: "main",
         },
       },
       // optional: for pnpm monorepos, force my-package to be used when vite depends on it
       pnpmOverrides: {
-        'vite@*>my-package': 'file:../../packages/my-package',
+        "vite@*>my-package": "file:../../packages/my-package",
       },
       // optional: patch files before running actions
       patchFiles: {
-        'package.json': (content) =>
-          content.replace('workspace:*', 'file:../../packages/my-package'),
+        "package.json": (content) =>
+          content.replace("workspace:*", "file:../../packages/my-package"),
       },
       // actions to run in the cloned repository
       actions: [
-        'pnpm install --no-frozen-lockfile',
-        'pnpm run build',
+        "pnpm install --no-frozen-lockfile",
+        "pnpm run build",
         // you can also use a functions instead of string commands
         () => {},
-        'pnpm run test-unit',
+        "pnpm run test-unit",
       ],
     },
   ],
-})
+});
 ```
 
 2. Run the CLI in the same directory to clone and test your ecosystem:

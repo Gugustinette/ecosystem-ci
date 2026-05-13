@@ -1,38 +1,34 @@
 {
   "name": "test-ecosystem-ci",
-  "type": "module",
   "version": "0.0.3",
-  "packageManager": "pnpm@10.21.0",
   "description": "Run CI across the ecosystem",
-  "author": "Augustin Mercier <gugustinette@proton.me>",
-  "license": "MIT",
-  "funding": "https://github.com/sponsors/Gugustinette",
   "homepage": "https://github.com/Gugustinette/ecosystem-ci#readme",
+  "bugs": {
+    "url": "https://github.com/Gugustinette/ecosystem-ci/issues"
+  },
+  "license": "MIT",
+  "author": "Augustin Mercier <gugustinette@proton.me>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Gugustinette/ecosystem-ci.git"
   },
-  "bugs": {
-    "url": "https://github.com/Gugustinette/ecosystem-ci/issues"
-  },
-  "exports": {
-    ".": "./dist/index.mjs",
-    "./package.json": "./package.json"
-  },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "funding": "https://github.com/sponsors/Gugustinette",
   "bin": {
     "ecosystem-ci": "./dist/cli.mjs"
   },
   "files": [
     "dist"
   ],
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "engines": {
-    "node": ">=20.19.0"
   },
   "scripts": {
     "build": "tsdown",
@@ -42,8 +38,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
     "release": "bumpp"
   },
   "dependencies": {
@@ -62,5 +58,9 @@
     "tsdown": "^0.22.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.6"
-  }
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@10.21.0"
 }
